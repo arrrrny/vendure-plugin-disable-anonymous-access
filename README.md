@@ -1,36 +1,48 @@
-# Vendure plugin template
+# Vendure Plugin: Disable Anonymous Access
 
-1. Copy this directory and rename to `vendure-plugin-YOUR-PLUGIN-NAME`
-2. Update the `name` and `description` field in `package.json`
-4. Update this Readme: What does the plugin do? How can someone use your plugin in their project?
-5. Run `npm install` to install the dependencies
-6. Run `npm run start` to start the server
+This plugin allows you to disable anonymous access to your Vendure e-commerce store. By requiring users to authenticate before accessing any content, you can enhance security and control access to your store.
 
-The admin is now available at `http://localhost:3050/admin`. Login with _superadmin/superadmin_
 
-The shop GraphQL `http://localhost:3050/shop-api`. Here you can test your custom GraphQL query:
-```graphql
-{
-  exampleQuery
+## Configuration
+
+To configure the plugin, open your Vendure project's `vendure-config.ts` file and add the following code:
+
+```typescript
+import { DisableAnonymousAccessPlugin } from 'vendure-plugin-disable-anonymous-access';
+
+export const config: VendureConfig = {
+  // ... other config options
+  plugins: [
+    // ... other plugins
+    DisableAnonymousAccessPlugin.int({
+      allowedMethods:["FirebaseAuth"]
+    }),
+  ],
+};
+```
+
+## Usage
+
+Once the plugin is installed and configured, anonymous access will be disabled. Users will be required to authenticate before accessing any content on your Vendure store. 
+
+We still need to allow some methods like authenticate.  This plugin extracts the graphql method name and checks if the method is within the allowed method defined in the options and allow that method to pass by without authentication. In the below, this is the body sent and since FirebaseAuth method is allowed, it bypasses.
+```
+body {
+  operationName: null,
+  variables: {
+    uid: 'OWT6nismkIXDrqdZzCK5XXXXXXXXX',
+    jwt: 'token'
+  },
+  query: 'mutation FirebaseAuth($uid: String!, $jwt: String!) {\n' +
+    '  __typename\n' +
+    '  authenticate(input: {firebase: {uid: $uid, jwt: $jwt}}) {\n' +
+    '    __typename\n' +
+    '  }\n' +
+    '}'
 }
 ```
 
-## Testing
+## Contributing
 
-1. Run `npm run test` to run the e2e test.
-2. Don't forget to implement your own!
+Contributions are welcome! If you find any issues or have suggestions for improvements, please open an issue or submit a pull request on the [GitHub repository](https://github.com/arrrrny/vendure-plugin-disable-anonymous-access).
 
-## Publishing to NPM
-
-1. Make sure you are [logged in to NPM](https://docs.npmjs.com/cli/v9/commands/npm-login)
-2. `npm run build`
-3. `npm publish`
-
-That's it!
-
-(Maybe share your accomplishments in the [Vendure Discord](https://vendure.io/community)?
-
-## Next steps
-
-1. Check out [the docs](https://docs.vendure.io/guides/developer-guide/plugins/) to see the possibilities of a plugin
-2. Check out [GraphQL codegen](https://the-guild.dev/graphql/codegen) to generate Typescript types for your custom GraphQL types

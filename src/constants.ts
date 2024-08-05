@@ -1,2 +1,2 @@
-export const loggerCtx = "ExamplePlugin";
-export const PLUGIN_INIT_OPTIONS = Symbol("PLUGIN_INIT_OPTIONS");
+export const DISABLE_ANONYMOUS_ACCESS_PLUGIN_OPTIONS = Symbol('DISABLE_ANONYMOUS_ACCESS_PLUGIN_OPTIONS');
+export const loggerCtx = 'DisableAnonymousAccessPlugin';
