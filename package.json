@@ -1,6 +1,6 @@
 {
   "name": "vendure-plugin-disable-anonymous-access",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Disable anonymous access to shop-api and only allow to defined methods like authenticate",
   "author": "ARRRRNY",
   "repository": "https://github.com/arrrrny/vendure-plugin-disable-anonymous-access",
